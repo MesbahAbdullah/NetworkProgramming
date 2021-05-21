@@ -7,12 +7,12 @@ from tkinter import messagebox
 
 
 window = Tk()
-window.title("Tic Tac Toe ")
+window.title("Tic Tac Toe : player X ")
 window.geometry("260x320")
 
 s = socket(AF_INET, SOCK_STREAM)
 host = '127.0.0.1'
-port = 7000
+port = 8000
 s.bind((host, port))
 s.listen(5)
 
@@ -29,7 +29,6 @@ def receive_thread(c):
 def displayRecieved(num):
     bt = [f"button{num}"]
     bt['text'] = 'O'
-    #bt['state'] = 'disable'
     check()
 
 
@@ -85,92 +84,59 @@ def win(player):
 
     
 turn=1
-def clicked1():
-    c.send("vxcv")
+def clicked1():    
 	if button1["text"]==" ":
-	   button1["text"]='X'    
+	   button1["text"]='X'	
+	c.send(str(1).encode("utf-8"))
 	check()
 
-def clicked2():
-	global turn
+def clicked2():	
 	if button2["text"]==" ":
-		if turn==1:
-			turn=2
-			button2["text"]='X'
-		else:
-			turn=1
-			button2["text"]='O'
-		check()
+	   button2["text"]='X'	
+	c.send(str(2).encode("utf-8"))
+	check()
+		
 def clicked3():
-	global turn
-	if button3["text"]==" ":
-		if turn==1:
-			turn=2
-			button3["text"]='X'
-		else:
-			turn=1
-			button3["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'	
+	c.send(str(3).encode("utf-8"))
+	check()
+
 def clicked4():
-	global turn
-	if button4["text"]==" ":
-		if turn==1:
-			turn=2
-			button4["text"]='X'
-		else:
-			turn=1
-			button4["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'	
+	c.send(str(4).encode("utf-8"))
+	check()
+
 def clicked5():
-	global turn
-	if button5["text"]==" ":
-		if turn==1:
-			turn=2
-			button5["text"]='X'
-		else:
-			turn=1
-			button5["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'
+	c.send(str(5).encode("utf-8"))
+	check()
+
 def clicked6():
-	global turn
-	if button6["text"]==" ":
-		if turn==1:
-			turn=2
-			button6["text"]='X'
-		else:
-			turn=1
-			button6["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'
+	c.send(str(6).encode("utf-8"))
+	check()
+
 def clicked7():
-	global turn
-	if button7["text"]==" ":
-		if turn==1:
-			turn=2
-			button7["text"]='X'
-		else:
-			turn=1
-			button7["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'
+	c.send(str(7).encode("utf-8"))
+	check()
+
 def clicked8():
-	global turn
-	if button8["text"]==" ":
-		if turn==1:
-			turn=2
-			button8["text"]='X'
-		else:
-			turn=1
-			button8["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'
+ 	c.send(str(8).encode("utf-8"))
+	check()
+	
 def clicked9():
-	global turn
-	if button9["text"]==" ":
-		if turn==1:
-			turn=2
-			button9["text"]='X'
-		else:
-			turn=1
-			button9["text"]='O'
-		check()
+	if button2["text"]==" ":
+	   button2["text"]='X'	
+	c.send(str(9).encode("utf-8"))
+	check()
 
 
 button1 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked1)
@@ -199,6 +165,7 @@ button8.grid(row=2,column=2)
 
 button9 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked9)
 button9.grid(row=2,column=3)
+c.close()
 
 window.mainloop()
 
