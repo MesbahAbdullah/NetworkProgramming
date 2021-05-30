@@ -12,7 +12,7 @@ window.geometry("260x320")
 
 s = socket(AF_INET, SOCK_STREAM)
 host = '127.0.0.1'
-port = 8000
+port = 7018
 s.bind((host, port))
 s.listen(5)
 
@@ -81,8 +81,13 @@ def win(player):
 	messagebox.showinfo("Winner is", player )
 	window.destroy()
 
-
-    
+def clicked(x)
+   bt = [f"button{x}"]
+   if bt["text"]==" ":
+	   bt["text"]='X'	
+	c.send(str(x).encode("utf-8"))
+	check()
+'''
 turn=1
 def clicked1():    
 	if button1["text"]==" ":
@@ -129,7 +134,7 @@ def clicked7():
 def clicked8():
 	if button2["text"]==" ":
 	   button2["text"]='X'
- 	c.send(str(8).encode("utf-8"))
+ 	#c.send(str(8).encode("utf-8"))
 	check()
 	
 def clicked9():
@@ -138,32 +143,32 @@ def clicked9():
 	c.send(str(9).encode("utf-8"))
 	check()
 
-
-button1 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked1)
+'''
+button1 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,1))
 button1.grid(row=0,column=1)
 
-button2 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked2)
+button2 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,2))
 button2.grid(row=0,column=2)
 
-button3 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked3)
+button3 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,3))
 button3.grid(row=0,column=3)
 
-button4 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked4)
+button4 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,4))
 button4.grid(row=1,column=1)
 
-button5 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked5)
+button5 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,5))
 button5.grid(row=1,column=2)
 
-button6 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked6)
+button6 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,6))
 button6.grid(row=1,column=3)
 
-button7 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked7)
+button7 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,7))
 button7.grid(row=2,column=1)
 
-button8 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked8)
+button8 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,8))
 button8.grid(row=2,column=2)
 
-button9 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command = clicked9)
+button9 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,9))
 button9.grid(row=2,column=3)
 c.close()
 

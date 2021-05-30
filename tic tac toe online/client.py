@@ -12,7 +12,7 @@ window.geometry("260x320")
 
 s = socket(AF_INET, SOCK_STREAM)
 host = '127.0.0.1'
-port = 8000
+port = 7018
 s.bind((host, port))
 s.listen(5)
 
