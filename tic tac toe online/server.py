@@ -1,6 +1,5 @@
 from socket import *
 from _thread import *
-import threading
 from tkinter import *
 from functools import partial
 
