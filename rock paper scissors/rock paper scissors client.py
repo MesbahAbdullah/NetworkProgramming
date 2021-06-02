@@ -12,6 +12,7 @@ win.geometry("650x550")
 result=StringVar()
 yourScore=IntVar()
 otherPlayerScore=IntVar()
+otherPlayerChoice=StringVar()
 ################## socket initialization ##################
 s = socket(AF_INET, SOCK_STREAM)
 host = '127.0.0.1'
@@ -72,7 +73,16 @@ def userChoice(num):       #will send number one to client to represent sotone
   global recievedNum
   checkWinner(int(sentNum),int(recievedNum))
   
-     
+def userchoice(choice):
+  if choice==1:
+      out="      other player choice is stone"
+      otherPlayerChoice.set(out)
+  elif choice==2:
+      out="      other player choice is paper"
+      otherPlayerChoice.set(out)
+  elif choice==3:
+      out="      other player choice is scissors"
+      otherPlayerChoice.set(out)     
 
 def checkWinner(sentNum,recievedNum):   #1-->stone , 2-->paper  ,3-->scissors
   global sentFlag
@@ -86,12 +96,10 @@ def checkWinner(sentNum,recievedNum):   #1-->stone , 2-->paper  ,3-->scissors
          youWon()
       elif((recievedNum==1 and sentNum==3) or (recievedNum==2 and sentNum==1) or (recievedNum==3 and sentNum==2)):
           otherPlayerWon()
-  
-  
+      userchoice(recievedNum)
+      enableAllButtons()
   
 
- 
-    
 # ------------------------IMAGE DATA----------------------
 
 stone_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock paper scissors\\Rock.png")
@@ -104,6 +112,8 @@ scissors_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock paper scissors\\sc
 scissors_image = ImageTk.PhotoImage(scissors_image1)
 # ---------------------------------------------------------
 
+
+#-------------------GUI components-------------------------
 msg=Label(win,bg="black" , fg="gray", text='Make Your Choice',font=("Courier",25))
 msg.place(relx=0.5, rely=0.09, anchor =CENTER)
 
@@ -118,6 +128,9 @@ button3.place(relx=0.8, rely=0.35, anchor=CENTER)
 
 ent1 = Entry(win,bg="black" , fg="gray", textvariable=result, width=27, font=('Ubuntu', 24), relief=FLAT)
 ent1.place(relx=0.5, rely=0.65, anchor=CENTER) 
+
+ent4 = Entry(win,bg="black" , fg="gray", textvariable=otherPlayerChoice, width=27, font=('Ubuntu', 24), relief=FLAT)
+ent4.place(relx=0.5, rely=0.73, anchor=CENTER) 
 
 ent2 = Entry(win,bg="black" , fg="gray", textvariable=otherPlayerScore, width=2, font=('Ubuntu', 24), relief=FLAT)
 ent2.place(relx=0.3, rely=0.85, anchor=CENTER) 
