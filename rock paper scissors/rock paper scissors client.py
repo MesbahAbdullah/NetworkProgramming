@@ -94,13 +94,13 @@ def checkWinner(sentNum,recievedNum):   #1-->stone , 2-->paper  ,3-->scissors
     
 # ------------------------IMAGE DATA----------------------
 
-stone_image1 = Image.open("G:\\F_Y_S_S\\network\lap\\rock\\Rock.png")
+stone_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock paper scissors\\Rock.png")
 stone_image = ImageTk.PhotoImage(stone_image1)
 
-paper_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock\\paper.png")
+paper_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock paper scissors\\paper.png")
 paper_image = ImageTk.PhotoImage(paper_image1)
 
-scissors_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock\\scissors.png")
+scissors_image1 = Image.open("G:\\F_Y_S_S\\network\\lap\\rock paper scissors\\scissors.png")
 scissors_image = ImageTk.PhotoImage(scissors_image1)
 # ---------------------------------------------------------
 

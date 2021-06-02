@@ -1,176 +1,98 @@
-from socket import*
-from _thread import*
+from socket import *
+from _thread import *
 import threading
-from tkinter import*
-from tkinter import messagebox
+from tkinter import *
+from functools import partial
 
+wind = Tk()
+wind.title("Tic Tac Toe : server X ")
+wind.geometry("260x320")
+message_button =Button(wind, text="server  : X " , width=15,disabledforeground="black")
+message_button.grid(row=0)
+message_button["state"] = 'disable'
+counter = 0
+socket= socket(AF_INET, SOCK_STREAM)
+host = "127.0.0.1"
+port = 7000
+socket.bind((host, port))
+socket.listen(5)
+session, client_info = socket.accept()
+print("connected ip: " + client_info[0])
+lastWritten = ''
 
-
-window = Tk()
-window.title("Tic Tac Toe : player X ")
-window.geometry("260x320")
-
-s = socket(AF_INET, SOCK_STREAM)
-host = '127.0.0.1'
-port = 7018
-s.bind((host, port))
-s.listen(5)
-
-global lastWritten
-
-def receive_thread(c):
-    while True:        
+def createButtons():
+    buttons = {} 
+    counter=1
+    for r in range(1,4):
+        for c in range(1,4):
+            buttons[f"btn_{counter}"] = Button(wind, text="",bg="black" , fg="white" , width=7 , height =4,command=partial(clicked, counter), disabledforeground="blue")
+            buttons[f"btn_{counter}"].grid(row = r+1, column = c)
+            counter += 1
+    return buttons
+ 
+def recieved_thread(c):
+    while True:
         x = c.recv(500)
         print("server" + x.decode("utf-8") + " recieved.")
         global lastWritten
         lastWritten = 'O'
         displayRecieved(int(x.decode("utf-8")))
-       
+
+
 def displayRecieved(num):
-    bt = [f"button{num}"]
+    bt = btns[f"btn_{num}"]
     bt['text'] = 'O'
-    check()
+    bt['state'] = 'disable'
+    enableEmptyButtons()
+    checkEndGame()
 
+def clicked(counter) : 
+    btn = btns[f"btn_{counter}"]
+    global session
+    btn["text"] = 'X'
+    btn["state"] = 'disable'
+    global lastWritten
+    lastWritten = 'X'
+    session.send(str(counter).encode("utf-8"))
+    disapleAllButtons()
+    checkEndGame()
 
-c, ad = s.accept()
-
-receive = threading.Thread(target=receive_thread, args=(c,))
-receive.start()
-
-
+def disapleAllButtons():
+    c = 1
+    for i in range(1, 10):
+        btn = btns[f"btn_{c}"]
+        btn["state"] = 'disable'
+        c += 1
         
+def check(btn1, btn2, btn3):
+    if(btn1["text"] == btn2["text"] == btn3["text"] != ''):
+        return True
+    else:
+        return False
+def checkEndGame():
+    global playerNumber
+    global button
+    global counter
+    if(check(btns["btn_1"], btns["btn_2"], btns["btn_3"]) or check(btns["btn_4"], btns["btn_5"], btns["btn_6"]) or\
+        check(btns["btn_7"], btns["btn_8"], btns["btn_9"]) or check(btns["btn_1"], btns["btn_4"], btns["btn_7"]) or\
+        check(btns["btn_2"], btns["btn_5"], btns["btn_8"]) or check(btns["btn_3"], btns["btn_6"], btns["btn_9"]) or\
+        check(btns["btn_1"], btns["btn_5"], btns["btn_9"]) or check(btns["btn_7"], btns["btn_5"], btns["btn_3"])):
+        message_button['text'] = "Player " + lastWritten + " wins."
+        disapleAllButtons()
+    elif counter == 8:
+        message_button['text'] = "No player wins."
+    counter += 1
 
+btns = createButtons()
+def enableEmptyButtons():
+    c = 1
+    for i in range(1, 10):
+        btn = btns[f"btn_{c}"]
+        if btn["text"] == '':
+            btn['state'] = 'active'
+        c += 1
 
+start_new_thread(recieved_thread, (session, )) 
+wind.mainloop()
 
-flag=0
-def check():
-	global flag
-	flag += 1
-	b1=button1["text"]
-	b2=button2["text"]
-	b3=button3["text"]
-	b4=button4["text"]
-	b5=button5["text"]
-	b6=button6["text"]
-	b7=button7["text"]
-	b8=button8["text"]
-	b9=button9["text"]
-    
-	if(b1==b2 and b2==b3 and b1=='O' or b1==b2 and b2==b3 and b1=='X'):
-		win(b1)
-	if(b4==b5 and b5==b6 and b4=='O' or b4==b5 and b5==b6 and b4=='X'):
-		win(b4)
-	if(b7==b8 and b8==b9 and b7=='O' or b7==b8 and b8==b9 and b7=='X'):
-		win(b7)
-	if(b1==b4 and b4==b7 and b1=='O' or b1==b4 and b4==b7 and b1=='X'):
-		win(b1)
-	if(b2==b5 and b5==b8 and b2=='O' or b2==b5 and b5==b8 and b2=='X'):
-		win(b2)
-	if(b3==b6 and b6==b9 and b3=='O' or b3==b6 and b6==b9 and b3=='X'):
-		win(b3)
-	if(b1==b5 and b5==b9 and b1=='O' or b1==b5 and b5==b9 and b1=='X'):
-		win(b1)
-	if(b3==b5 and b5==b7 and b3=='O' or b3==b5 and b5==b7 and b3=='X'):
-		win(b3)
-	if flag == 9:
-		messagebox.showinfo("draw")
-		window.destroy()
-
-
-def win(player):
-	messagebox.showinfo("Winner is", player )
-	window.destroy()
-
-def clicked(x)
-   bt = [f"button{x}"]
-   if bt["text"]==" ":
-	   bt["text"]='X'	
-	c.send(str(x).encode("utf-8"))
-	check()
-'''
-turn=1
-def clicked1():    
-	if button1["text"]==" ":
-	   button1["text"]='X'	
-	c.send(str(1).encode("utf-8"))
-	check()
-
-def clicked2():	
-	if button2["text"]==" ":
-	   button2["text"]='X'	
-	c.send(str(2).encode("utf-8"))
-	check()
-		
-def clicked3():
-	if button2["text"]==" ":
-	   button2["text"]='X'	
-	c.send(str(3).encode("utf-8"))
-	check()
-
-def clicked4():
-	if button2["text"]==" ":
-	   button2["text"]='X'	
-	c.send(str(4).encode("utf-8"))
-	check()
-
-def clicked5():
-	if button2["text"]==" ":
-	   button2["text"]='X'
-	c.send(str(5).encode("utf-8"))
-	check()
-
-def clicked6():
-	if button2["text"]==" ":
-	   button2["text"]='X'
-	c.send(str(6).encode("utf-8"))
-	check()
-
-def clicked7():
-	if button2["text"]==" ":
-	   button2["text"]='X'
-	c.send(str(7).encode("utf-8"))
-	check()
-
-def clicked8():
-	if button2["text"]==" ":
-	   button2["text"]='X'
- 	#c.send(str(8).encode("utf-8"))
-	check()
-	
-def clicked9():
-	if button2["text"]==" ":
-	   button2["text"]='X'	
-	c.send(str(9).encode("utf-8"))
-	check()
-
-'''
-button1 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,1))
-button1.grid(row=0,column=1)
-
-button2 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,2))
-button2.grid(row=0,column=2)
-
-button3 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,3))
-button3.grid(row=0,column=3)
-
-button4 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,4))
-button4.grid(row=1,column=1)
-
-button5 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,5))
-button5.grid(row=1,column=2)
-
-button6 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,6))
-button6.grid(row=1,column=3)
-
-button7 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,7))
-button7.grid(row=2,column=1)
-
-button8 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,8))
-button8.grid(row=2,column=2)
-
-button9 = Button(window , text=" " , bg="black" , fg="white" , width=7 , height =4 , font=("Helvtica","15"),command=partial(clicked,9))
-button9.grid(row=2,column=3)
-c.close()
-
-window.mainloop()
-
+session.close()

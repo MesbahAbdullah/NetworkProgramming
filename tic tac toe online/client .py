@@ -1,13 +1,13 @@
 from socket import *
 from _thread import *
 import threading
-import tkinter as tk
+from tkinter import *
 from functools import partial
 
-wind = tk.Tk()
-wind.geometry('300x400')
-playerNumber = 0
-message_button = tk.Button(wind, text="Client: O" + str(playerNumber+1), width=15,disabledforeground="black")
+wind = Tk()
+wind.title("Tic Tac Toe : client O ")
+wind.geometry("260x320")
+message_button = Button(wind, text="Client: O",  width=15,disabledforeground="black")
 message_button.grid(row=0)
 message_button["state"] = 'disable'
 counter = 0
@@ -24,7 +24,7 @@ def createButtons():
     counter=1
     for r in range(1,4):
         for c in range(1,4):
-            buttons[f"btn_{counter}"] = tk.Button(wind, text="",width=7 , height =4,command=partial(clicked, counter), disabledforeground="red")
+            buttons[f"btn_{counter}"] = Button(wind,bg="black" , fg="white" , text="",width=7 , height =4,command=partial(clicked, counter), disabledforeground="red")
             buttons[f"btn_{counter}"].grid(row = r+1, column = c)
             counter += 1
     return buttons
@@ -93,4 +93,4 @@ def recieved_thread(c):
         x=c.recv(500)
         displayRecieved(int(x.decode("utf-8")))
 start_new_thread(recieved_thread, (socket,))
-tk.mainloop()
+wind.mainloop()
